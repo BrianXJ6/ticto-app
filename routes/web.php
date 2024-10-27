@@ -16,13 +16,19 @@ Route::controller(WebController::class)->group(function () {
 
     // Auth
     Route::middleware(['auth'])->group(function () {
-        Route::prefix('admin')->name('admin.')->group(function () {
-            Route::get('/', fn() => dd('aqui em admin'))->name('dashboard');
-        });
+        // Admin
+        Route::prefix('admin')
+            ->name('admin.')
+            ->group(function () {
+                Route::get('/', 'adminDashboardPage')->name('dashboard');
+            });
 
-        Route::prefix('funcionarios')->name('employee.')->group(function () {
-            Route::get('/', fn() => dd('aqui em functionarios'))->name('dashboard');
-        });
+        // Employee
+        Route::prefix('funcionarios')
+            ->name('employee.')
+            ->group(function () {
+                Route::get('/', 'employeeDashboardPage')->name('dashboard');
+            });
     });
 
     // Actions
@@ -32,7 +38,6 @@ Route::controller(WebController::class)->group(function () {
             Route::controller(LoginController::class)->group(function () {
                 Route::post('login', 'login')->name('login');
             });
-
             Route::controller(RegisterController::class)->group(function () {
                 Route::post('register', 'register')->name('register');
             });

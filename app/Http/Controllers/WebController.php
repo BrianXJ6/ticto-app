@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 class WebController extends Controller
 {
     /**
-     * Show the application dashboard.
+     * Show the home page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
@@ -37,5 +37,25 @@ class WebController extends Controller
         return view('auth.register', [
             'role_options' => UserRoleEnum::getValues(),
         ]);
+    }
+
+    /**
+     * Show the admin dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function adminDashboardPage(): Renderable
+    {
+        return view('dashboards.admin.dashboard');
+    }
+
+    /**
+     * Show the employee dashboard.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function employeeDashboardPage(): Renderable
+    {
+        return view('dashboards.employee.dashboard');
     }
 }

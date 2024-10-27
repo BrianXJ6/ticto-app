@@ -23,7 +23,7 @@
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <!-- Left Side Of Navbar -->
                         <ul class="navbar-nav me-auto">
-                            {{-- ... --}}
+                            <!-- ... -->
                         </ul>
 
                         <!-- Right Side Of Navbar -->
@@ -41,7 +41,11 @@
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                     {{ Auth::user()->name }}
                                 </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a href="{{ route(Auth::user()->role->value . '.dashboard') }}" class="dropdown-item">
+                                        Dashboard
+                                    </a>
+                                    <hr class="dropdown-divider">
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}
                                     </a>

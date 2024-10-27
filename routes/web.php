@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WebController;
+use App\Http\Middleware\RoleMiddleware;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -19,6 +20,7 @@ Route::controller(WebController::class)->group(function () {
         // Admin
         Route::prefix('admin')
             ->name('admin.')
+            ->middleware(RoleMiddleware::class . ':admin')
             ->group(function () {
                 Route::get('/', 'adminDashboardPage')->name('dashboard');
             });
@@ -26,6 +28,7 @@ Route::controller(WebController::class)->group(function () {
         // Employee
         Route::prefix('funcionarios')
             ->name('employee.')
+            ->middleware(RoleMiddleware::class . ':employee')
             ->group(function () {
                 Route::get('/', 'employeeDashboardPage')->name('dashboard');
             });

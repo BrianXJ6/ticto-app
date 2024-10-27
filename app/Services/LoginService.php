@@ -21,14 +21,14 @@ class LoginService
     public function login(array $credentials): string
     {
         if (!$this->attemptLogin($credentials)) {
-            throw ValidationException::withMessages(['login' => [trans('auth.failed')]]);
+            throw ValidationException::withMessages(['email' => [trans('auth.failed')]]);
         }
 
         request()->session()->regenerate();
 
         return match (Auth::user()->role) {
             UserRoleEnum::ADMIN => route('admin.dashboard'),
-            UserRoleEnum::ADMIN => route('employee.dashboard'),
+            UserRoleEnum::EMPLOYEE => route('employee.dashboard'),
         };
     }
 

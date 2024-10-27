@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\View\View;
 use App\Enum\UserRoleEnum;
 use App\Services\RegisterService;
 use App\Http\Controllers\Controller;
@@ -18,19 +17,7 @@ class RegisterController extends Controller
      */
     public function __construct(protected RegisterService $registerService)
     {
-        $this->middleware('guest');
-    }
-
-    /**
-     * Show the application registration form.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function showRegistrationForm(): View
-    {
-        return view('auth.register', [
-            'role_options' => UserRoleEnum::getValues(),
-        ]);
+        // ...
     }
 
     /**

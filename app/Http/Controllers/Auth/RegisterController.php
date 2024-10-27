@@ -33,8 +33,8 @@ class RegisterController extends Controller
 
         return redirect(
             match ($user->role) {
-                UserRoleEnum::ADMIN => '/admin',
-                UserRoleEnum::EMPLOYEE => '/funcionarios',
+                UserRoleEnum::ADMIN => route('admin.dashboard'),
+                UserRoleEnum::EMPLOYEE => route('employee.dashboard'),
             }
         );
     }

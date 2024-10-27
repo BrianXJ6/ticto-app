@@ -2,71 +2,53 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\View\View;
+use App\Enum\UserRoleEnum;
+use App\Services\RegisterService;
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Foundation\Auth\RegistersUsers;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\RedirectResponse;
+use App\Http\Requests\RegisterRequest;
 
 class RegisterController extends Controller
 {
-    /*
-    |--------------------------------------------------------------------------
-    | Register Controller
-    |--------------------------------------------------------------------------
-    |
-    | This controller handles the registration of new users as well as their
-    | validation and creation. By default this controller uses a trait to
-    | provide this functionality without requiring any additional code.
-    |
-    */
-
-    use RegistersUsers;
-
     /**
-     * Where to redirect users after registration.
+     * Create new RegisterController instance
      *
-     * @var string
+     * @param RegisterService $registerService
      */
-    protected $redirectTo = '/home';
-
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
+    public function __construct(protected RegisterService $registerService)
     {
         $this->middleware('guest');
     }
 
     /**
-     * Get a validator for an incoming registration request.
+     * Show the application registration form.
      *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
+     * @return \Illuminate\View\View
      */
-    protected function validator(array $data)
+    public function showRegistrationForm(): View
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        return view('auth.register', [
+            'role_options' => UserRoleEnum::getValues(),
         ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Handle a registration request for the application.
      *
-     * @param  array  $data
-     * @return \App\Models\User
+     * @param \App\Http\Requests\RegisterRequest $request
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
-    protected function create(array $data)
+    public function register(RegisterRequest $request): RedirectResponse
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $user = $this->registerService->register($request->getData());
+
+        return redirect(
+            match ($user->role) {
+                UserRoleEnum::ADMIN => '/admin',
+                UserRoleEnum::EMPLOYEE => '/funcionarios',
+            }
+        );
     }
 }

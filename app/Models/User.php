@@ -4,6 +4,8 @@ namespace App\Models;
 
 use App\Enum\UserRoleEnum;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -11,6 +13,7 @@ class User extends Authenticatable
 {
     use HasFactory;
     use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,10 +21,12 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
         'cpf',
         'name',
         'email',
         'birth_date',
+        'position',
         'role',
         'zip_code',
         'street',
@@ -47,9 +52,26 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
+            'user_id' => 'integer',
             'role' => UserRoleEnum::class,
             'birth_date' => 'date',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the points for the user.
+     */
+    public function points(): HasMany
+    {
+        return $this->hasMany(Point::class);
+    }
+
+    /**
+     * Get the employees for the user.
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(User::class);
     }
 }

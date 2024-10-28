@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enum\UserRoleEnum;
 use App\Services\RegisterService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
@@ -29,13 +28,8 @@ class RegisterController extends Controller
      */
     public function register(RegisterRequest $request): RedirectResponse
     {
-        $user = $this->registerService->register($request->getData());
+        $this->registerService->register($request->getData());
 
-        return redirect(
-            match ($user->role) {
-                UserRoleEnum::ADMIN => route('admin.dashboard'),
-                UserRoleEnum::EMPLOYEE => route('employee.dashboard'),
-            }
-        );
+        return redirect()->route('admin.dashboard');
     }
 }

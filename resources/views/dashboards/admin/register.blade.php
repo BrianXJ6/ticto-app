@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header">Cadastro</div>
                 <div class="card-body">
-                    <form method="POST" action="{{ route('actions.register') }}">
+                    <form method="POST" action="{{ route('actions.admin.employees.register') }}">
                         @csrf
                         <div class="row mb-3">
                             <label for="name" class="col-md-4 col-form-label text-md-end">Nome completo:</label>
@@ -50,6 +50,18 @@
                             <div class="col-md-6">
                                 <input id="birth-date" type="date" class="form-control @error('birth-date') is-invalid @enderror" name="birth-date" value="{{ old('birth-date') }}" required autocomplete="birth-date">
                                 @error('birth-date')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <label for="position" class="col-md-4 col-form-label text-md-end">Cargo:</label>
+                            <div class="col-md-6">
+                                <input id="position" type="text" class="form-control @error('position') is-invalid @enderror" name="position" value="{{ old('position') }}" required autocomplete="position" maxlength="100">
+                                @error('position')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>

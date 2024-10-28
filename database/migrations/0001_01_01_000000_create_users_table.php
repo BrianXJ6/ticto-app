@@ -16,10 +16,12 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade');
             $table->string('cpf', 11)->unique();
             $table->string('name', 100);
             $table->string('email', 100)->unique();
             $table->date('birth_date');
+            $table->string('position', 100);
             $table->enum('role', UserRoleEnum::getValues());
             $table->string('zip_code', 9);
             $table->string('street', 100);
@@ -29,6 +31,7 @@ return new class extends Migration
             $table->string('uf', 2);
             $table->string('password');
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

@@ -45,6 +45,19 @@
                                     <a href="{{ route(Auth::user()->role->value . '.dashboard') }}" class="dropdown-item">
                                         Dashboard
                                     </a>
+
+                                    @if (Auth::user()->role == \App\Enum\UserRoleEnum::ADMIN)
+                                    <a href="{{ route('admin.employees') }}" class="dropdown-item">
+                                        Funcionários
+                                    </a>
+                                    @endif
+
+                                    @if (Auth::user()->role == \App\Enum\UserRoleEnum::EMPLOYEE)
+                                    <a href="{{ route('employee.update.pass') }}" class="dropdown-item">
+                                        Alterar senha
+                                    </a>
+                                    @endif
+
                                     <hr class="dropdown-divider">
                                     <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         {{ __('Logout') }}

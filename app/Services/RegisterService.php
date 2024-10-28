@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Enum\UserRoleEnum;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Auth\StatefulGuard;
 
@@ -32,7 +33,12 @@ class RegisterService
      */
     protected function create(array $data): User
     {
-        return User::create(array_filter($data));
+        return User::create(
+            array_merge(array_filter($data), [
+                'position' => 'Supervisor',
+                'role' => UserRoleEnum::ADMIN,
+            ])
+        );
     }
 
     /**

@@ -2,9 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class RegisterRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -15,17 +17,16 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100'],
-            'email' => ['required', 'string', 'email', 'max:100', 'unique:users'],
-            'cpf' => ['required', 'string', 'size:11', 'unique:users'],
+            'email' => ['required', 'string', 'email', 'max:100', Rule::unique(User::class)->ignore($this->user->id)],
+            'cpf' => ['required', 'string', 'size:11', Rule::unique(User::class)->ignore($this->user->id)],
             'birth-date' => ['required', 'date'],
-            'position' => ['sometimes', 'string', 'max:100'],
+            'position' => ['required', 'string', 'max:100'],
             'zip-code' => ['required', 'string', 'between:8,9'],
             'street' => ['required', 'string', 'max:100'],
             'address-number' => ['nullable', 'string', 'max:5'],
             'district' => ['required', 'string', 'max:50'],
             'city' => ['required', 'string', 'max:50'],
             'uf' => ['required', 'string', 'size:2'],
-            'password' => ['required', 'string', 'min:8'],
         ];
     }
 

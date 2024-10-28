@@ -2,15 +2,18 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enum\UserRoleEnum;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -18,8 +21,19 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'user_id',
+        'cpf',
         'name',
         'email',
+        'birth_date',
+        'position',
+        'role',
+        'zip_code',
+        'street',
+        'address_number',
+        'district',
+        'city',
+        'uf',
         'password',
     ];
 
@@ -28,10 +42,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password'];
 
     /**
      * Get the attributes that should be cast.
@@ -41,8 +52,26 @@ class User extends Authenticatable
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
+            'user_id' => 'integer',
+            'role' => UserRoleEnum::class,
+            'birth_date' => 'date',
             'password' => 'hashed',
         ];
+    }
+
+    /**
+     * Get the points for the user.
+     */
+    public function points(): HasMany
+    {
+        return $this->hasMany(Point::class);
+    }
+
+    /**
+     * Get the employees for the user.
+     */
+    public function employees(): HasMany
+    {
+        return $this->hasMany(User::class);
     }
 }

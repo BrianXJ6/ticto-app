@@ -157,5 +157,5 @@
 @endsection
 
 @push('scripts')
-@vite(['/resources/js/Pages/Register.js'])
+@vite('resources/js/Pages/Register.js')
 @endpush
